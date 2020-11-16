@@ -1,12 +1,12 @@
 package flaxbeard.immersivepetroleum.client.render;
 
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.util.EnumFacing;
+import org.lwjgl.opengl.GL11;
+
 import blusunrize.immersiveengineering.client.ClientUtils;
 import flaxbeard.immersivepetroleum.client.model.ModelPumpjack;
 import flaxbeard.immersivepetroleum.common.blocks.metal.TileEntityPumpjack;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.util.EnumFacing;
 
 public class MultiblockPumpjackRenderer extends TileEntitySpecialRenderer<TileEntityPumpjack.TileEntityPumpjackParent>
 {
@@ -20,26 +20,26 @@ public class MultiblockPumpjackRenderer extends TileEntitySpecialRenderer<TileEn
 	{
 		if (te != null)
 		{
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(x, y - 1, z);
+			GL11.glPushMatrix();
+			GL11.glTranslated(x, y - 1, z);
 	
 			EnumFacing rotation = te.facing;
 			if (rotation == EnumFacing.NORTH)
 			{
-				GlStateManager.rotate(90F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, 0);
+				GL11.glRotatef(90F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, 0);
 			}
 			else if (rotation == EnumFacing.WEST)
 			{
-				GlStateManager.rotate(180F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, -1);
+				GL11.glRotatef(180F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, -1);
 			}
 			else if (rotation == EnumFacing.SOUTH)
 			{
-				GlStateManager.rotate(270F, 0, 1, 0);
-				GlStateManager.translate(0, 0, -1);
+				GL11.glRotatef(270F, 0, 1, 0);
+				GL11.glTranslated(0, 0, -1);
 			}
-			GlStateManager.translate(-1, 0, -1);
+			GL11.glTranslated(-1, 0, -1);
 
 			if (te.mirrored)
 			{
@@ -58,7 +58,7 @@ public class MultiblockPumpjackRenderer extends TileEntitySpecialRenderer<TileEn
 			{
 				model.render(null, 0, 0, 0, 0, 0, 0.0625F);
 			}
-			GlStateManager.popMatrix();
+			GL11.glPopMatrix();
 			
 		}
 	}

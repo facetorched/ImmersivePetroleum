@@ -2,7 +2,7 @@ package flaxbeard.immersivepetroleum.common.blocks.multiblocks;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GL11;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,10 +10,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
+import flaxbeard.immersivepetroleum.common.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import blusunrize.immersiveengineering.ImmersiveEngineering;
 import blusunrize.immersiveengineering.api.MultiblockHandler.IMultiblock;
 import blusunrize.immersiveengineering.api.crafting.IngredientStack;
@@ -140,9 +140,9 @@ public class MultiblockPumpjack implements IMultiblock
 			te = new TileEntityPumpjack.TileEntityPumpjackParent();
 		}
 		
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(-90, 0, 1, 0);
-		GlStateManager.translate(1, 1, -2);
+		GL11.glPushMatrix();
+		GL11.glRotatef(-90, 0, 1, 0);
+		GL11.glTranslated(1, 1, -2);
 		
 		float pt = 0;
 		if (Minecraft.getMinecraft().thePlayer != null)
@@ -154,7 +154,7 @@ public class MultiblockPumpjack implements IMultiblock
 		TileEntitySpecialRenderer<TileEntity> tesr = TileEntityRendererDispatcher.instance.getSpecialRenderer((TileEntity) te);
 		
 		tesr.renderTileEntityAt((TileEntity) te, 0, 0, 0, pt, 0);
-		GlStateManager.popMatrix();
+		GL11.glPopMatrix();
 	}
 
 	@Override

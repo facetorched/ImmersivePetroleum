@@ -1,13 +1,13 @@
 package flaxbeard.immersivepetroleum.common.blocks;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.block.state.IBlockState;
+
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
+
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
@@ -24,7 +24,8 @@ public class BlockIPFluid extends BlockFluidClassic
 	public BlockIPFluid(String name, Fluid fluid, Material material)
 	{
 		super(fluid, material);
-		this.setUnlocalizedName(ImmersivePetroleum.MODID + "." + name);
+		this.setBlockName(ImmersivePetroleum.MODID + "." + name);
+		//this.setUnlocalizedName(ImmersivePetroleum.MODID + "." + name);
 		this.setCreativeTab(ImmersivePetroleum.creativeTab);
 		ImmersivePetroleum.registerBlock(this, ItemBlock.class, name);
 		IPContent.registeredIPBlocks.add(this);

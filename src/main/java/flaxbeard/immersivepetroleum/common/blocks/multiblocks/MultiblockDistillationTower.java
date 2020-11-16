@@ -2,7 +2,7 @@ package flaxbeard.immersivepetroleum.common.blocks.multiblocks;
 
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GL11;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,10 +11,10 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
+import flaxbeard.immersivepetroleum.common.util.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import blusunrize.immersiveengineering.ImmersiveEngineering;
 import blusunrize.immersiveengineering.api.MultiblockHandler.IMultiblock;
 import blusunrize.immersiveengineering.api.crafting.IngredientStack;
@@ -120,11 +120,11 @@ public class MultiblockDistillationTower implements IMultiblock
 				|| (iterator < 100 && iterator > 29 && (iterator - 29 + 6) % 34 == 0)
 				|| (iterator < 100 && iterator > 29 && (iterator - 29 - 17) % 34 == 0))
 		{
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(0, 1, 0);
-			GlStateManager.rotate(90, 1, 0, 0);
+			GL11.glPushMatrix();
+			GL11.glTranslated(0, 1, 0);
+			GL11.glRotatef(90, 1, 0, 0);
 			ImmersiveEngineering.proxy.drawSpecificFluidPipe("000011");
-			GlStateManager.popMatrix();
+			GL11.glPopMatrix();
 			return true;
 		}
 		return false;
@@ -160,15 +160,15 @@ public class MultiblockDistillationTower implements IMultiblock
 		{
 			 te = new TileEntityDistillationTower.TileEntityDistillationTowerParent();
 		}
-		GlStateManager.pushMatrix();
-		GlStateManager.rotate(-90, 0, 1, 0);
-		GlStateManager.translate(0, 1, -4);
+		GL11.glPushMatrix();
+		GL11.glRotatef(-90, 0, 1, 0);
+		GL11.glTranslated(0, 1, -4);
 		
 		
 		TileEntitySpecialRenderer<TileEntity> tesr = TileEntityRendererDispatcher.instance.getSpecialRenderer((TileEntity) te);
 		
 		tesr.renderTileEntityAt((TileEntity) te, 0, 0, 0, 0, 0);
-		GlStateManager.popMatrix();
+		GL11.glPopMatrix();
 	}
 
 	@Override

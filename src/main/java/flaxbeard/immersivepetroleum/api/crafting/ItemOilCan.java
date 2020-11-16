@@ -2,36 +2,24 @@ package flaxbeard.immersivepetroleum.api.crafting;
 
 import java.util.List;
 
+import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
+import blusunrize.immersiveengineering.common.util.Lib;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.immersivepetroleum.common.items.ItemIPBase;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.monster.EntityIronGolem;
-import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.MobEffects;
-import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.templates.FluidHandlerItemStack;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import blusunrize.immersiveengineering.api.Lib;
-import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
-import flaxbeard.immersivepetroleum.common.items.ItemIPBase;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class ItemOilCan extends ItemIPBase
 {
@@ -49,7 +37,7 @@ public class ItemOilCan extends ItemIPBase
 		FluidStack fs = FluidUtil.getFluidContained(stack);
 		if (fs!=null)
 		{
-			TextFormatting rarity = fs.getFluid().getRarity() == EnumRarity.COMMON ? TextFormatting.GRAY : fs.getFluid().getRarity().rarityColor;
+			TextFormatting rarity = fs.getFluid().getRarity() == EnumRarity.common ? TextFormatting.GRAY : fs.getFluid().getRarity().rarityColor;
 			list.add(rarity + fs.getLocalizedName() + TextFormatting.GRAY+": " +fs.amount + "/" + 8000 + "mB");
 		}
 		else

@@ -1,10 +1,15 @@
 package flaxbeard.immersivepetroleum.client.render;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
+
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntityBeacon;
 import net.minecraft.util.EnumFacing;
+
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL14;
+import org.lwjgl.opengl.GL44;
+
 import blusunrize.immersiveengineering.client.ClientUtils;
 import flaxbeard.immersivepetroleum.client.model.ModelDistillationTower;
 import flaxbeard.immersivepetroleum.common.blocks.metal.TileEntityDistillationTower;
@@ -30,31 +35,31 @@ public class MultiblockDistillationTowerRenderer extends TileEntitySpecialRender
 	{
 		if (te != null)
 		{
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(x, y - 1, z);
+			GL11.glPushMatrix();
+			GL11.glTranslated(x, y - 1, z);
 
 
 			
 			EnumFacing rotation = te.facing;
 			if (rotation == EnumFacing.NORTH)
 			{
-				GlStateManager.rotate(90F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, 0);
+				GL11.glRotatef(90F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, 0);
 			}
 			else if (rotation == EnumFacing.WEST)
 			{
-				GlStateManager.rotate(180F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, -1);
+				GL11.glRotatef(180F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, -1);
 			}
 			else if (rotation == EnumFacing.SOUTH)
 			{
-				GlStateManager.rotate(270F, 0, 1, 0);
-				GlStateManager.translate(0, 0, -1);
+				GL11.glRotatef(270F, 0, 1, 0);
+				GL11.glTranslated(0, 0, -1);
 			}
-			GlStateManager.translate(-3, 0, 0);
+			GL11.glTranslated(-3, 0, 0);
 			if (te.mirrored)
 			{
-				GlStateManager.translate(0, 0, -3);
+				GL11.glTranslated(0, 0, -3);
 			}
 			
 			float ticks = Minecraft.getMinecraft().thePlayer.ticksExisted + partialTicks;
@@ -74,7 +79,7 @@ public class MultiblockDistillationTowerRenderer extends TileEntitySpecialRender
 				model.renderFurnace(null, 0, 0, 0, 0, 0, 0.0625F);
 			}
 			
-			GlStateManager.popMatrix();
+			GL11.glPopMatrix();
 			
 		}
 	}

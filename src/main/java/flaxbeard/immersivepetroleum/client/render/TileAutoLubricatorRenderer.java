@@ -1,11 +1,4 @@
 package flaxbeard.immersivepetroleum.client.render;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
@@ -15,6 +8,11 @@ import flaxbeard.immersivepetroleum.api.crafting.LubricatedHandler.ILubricationH
 import flaxbeard.immersivepetroleum.client.model.ModelLubricantPipes;
 import flaxbeard.immersivepetroleum.client.model.ModelLubricantPipes.Base;
 import flaxbeard.immersivepetroleum.common.blocks.metal.TileEntityAutoLubricator;
+import net.minecraft.client.renderer.RenderHelper;
+import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumFacing;
+import net.minecraftforge.fluids.FluidStack;
 
 public class TileAutoLubricatorRenderer extends TileEntitySpecialRenderer<TileEntityAutoLubricator>
 {
@@ -33,10 +31,10 @@ public class TileAutoLubricatorRenderer extends TileEntitySpecialRenderer<TileEn
 		if (te == null)
 		{
 			
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(x, y, z);
-			GlStateManager.enableBlend();
-			GlStateManager.enableAlpha();
+			GL11.glPushMatrix();
+			GL11.glTranslated(x, y, z);
+			//GL11.glEnable(GL11.GL_BLEND);
+			//GL11.enableAlpha();
 			
 			
 			GL11.glScalef(0.65F, 0.65F, 0.65F);
@@ -45,12 +43,12 @@ public class TileAutoLubricatorRenderer extends TileEntitySpecialRenderer<TileEn
 			ClientUtils.bindTexture("immersivepetroleum:textures/models/lubricator.png");
 			base.render(null, 0, 0, 0, 0, 0, 0.0625F);
 			
-			GlStateManager.enableBlend();
-			GlStateManager.enableAlpha();
+			//GL11.glEnable(GL11.GL_BLEND);
+			//GL11.enableAlpha();
 			base.renderTank(null, 0, 0, 0, 0, 0, 0.0625F);
 			
 			//base.renderPlunger(null, 0, 0, 0, 0, 0, 0.0625F);
-			GlStateManager.popMatrix();
+			GL11.glPopMatrix();
 			return;
 		}
 		
@@ -59,9 +57,9 @@ public class TileAutoLubricatorRenderer extends TileEntitySpecialRenderer<TileEn
 	
 		int pass = net.minecraftforge.client.MinecraftForgeClient.getRenderPass();
 		
-		ClientUtils.bindAtlas();
-		GlStateManager.pushMatrix();
-		GlStateManager.translate(x+.5, y+.5, z+.5);
+		ClientUtils.bindAtlas(1);
+		GL11.glPushMatrix();
+		GL11.glTranslated(x+.5, y+.5, z+.5);
 
 		
 		float height = 16;
@@ -73,68 +71,68 @@ public class TileAutoLubricatorRenderer extends TileEntitySpecialRenderer<TileEn
 		}
 		float yOffset = (1 - level) * height * -1F/16F;
 		float scale = .0625f;
-		GlStateManager.enableBlend();
-		GlStateManager.enableAlpha();
+		//GL11.glEnable(GL11.GL_BLEND);
+		//GL11.enableAlpha();
 		if (pass == 1 && level > 0)
 		{
 			
 			RenderHelper.disableStandardItemLighting();
 
-			GlStateManager.pushMatrix();
+			GL11.glPushMatrix();
 			//ShaderUtil.alpha_static(0.25f, 1);
-			GlStateManager.translate(-4F/16F, 6/16F, -4F/16F);
-			GlStateManager.scale(scale, scale, scale);
+			GL11.glTranslated(-4F/16F, 6/16F, -4F/16F);
+			GL11.glScalef(scale, scale, scale);
 			float h = level * height;
-			ClientUtils.drawRepeatedFluidSprite(fs, 0, 0, 8, h);
-			GlStateManager.rotate(90,0,1,0);
-			GlStateManager.translate(-7.98, 0, 0);
-			ClientUtils.drawRepeatedFluidSprite(fs, 0, 0, 8, h);
-			GlStateManager.rotate(90,0,1,0);
-			GlStateManager.translate(-7.98,0,0);
-			ClientUtils.drawRepeatedFluidSprite(fs, 0, 0, 8, h);
-			GlStateManager.rotate(90,0,1,0);
-			GlStateManager.translate(-7.98,0,0);
-			ClientUtils.drawRepeatedFluidSprite(fs, 0,0, 8,h);
+			ClientUtils.drawRepeatedFluidIcon(fs.getFluid(), 0, 0, 8, h);
+			GL11.glRotatef(90,0,1,0);
+			GL11.glTranslated(-7.98, 0, 0);
+			ClientUtils.drawRepeatedFluidIcon(fs.getFluid(), 0, 0, 8, h);
+			GL11.glRotatef(90,0,1,0);
+			GL11.glTranslated(-7.98,0,0);
+			ClientUtils.drawRepeatedFluidIcon(fs.getFluid(), 0, 0, 8, h);
+			GL11.glRotatef(90,0,1,0);
+			GL11.glTranslated(-7.98,0,0);
+			ClientUtils.drawRepeatedFluidIcon(fs.getFluid(), 0,0, 8,h);
 
-			GlStateManager.rotate(90,1,0,0);
-			GlStateManager.translate(0,0,-h);
-			ClientUtils.drawRepeatedFluidSprite(fs, 0,0, 8,8);
-			GlStateManager.rotate(180, 1, 0, 0);
-			GlStateManager.translate(0, -9, -h);
-			ClientUtils.drawRepeatedFluidSprite(fs, 0,0, 8,8);
+			GL11.glRotatef(90,1,0,0);
+			GL11.glTranslated(0,0,-h);
+			ClientUtils.drawRepeatedFluidIcon(fs.getFluid(), 0,0, 8,8);
+			GL11.glRotatef(180, 1, 0, 0);
+			GL11.glTranslated(0, -9, -h);
+			ClientUtils.drawRepeatedFluidIcon(fs.getFluid(), 0,0, 8,8);
 
-			GlStateManager.scale(1/scale, 1/scale, 1/scale);
-			GlStateManager.translate(0,-1,-1);
-			GlStateManager.popMatrix();
+			GL11.glScalef(1/scale, 1/scale, 1/scale);
+			GL11.glTranslated(0,-1,-1);
+			GL11.glPopMatrix();
 				//ShaderUtil.releaseShader();
 			
 			RenderHelper.enableStandardItemLighting();
 
 		}
 
-		GlStateManager.popMatrix();
+		GL11.glPopMatrix();
 		
 		if (pass == 1)
 		{
 			
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(x, y, z);
-			GlStateManager.enableBlend();
-			GlStateManager.enableAlpha();
+			GL11.glPushMatrix();
+			GL11.glTranslated(x, y, z);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_ALPHA);
 			
 			ClientUtils.bindTexture("immersivepetroleum:textures/models/lubricator.png");
 			base.renderTank(null, 0, 0, 0, 0, 0, 0.0625F);
-			GlStateManager.popMatrix();
+			GL11.glPopMatrix();
 		}
 		
 		
 
 		if (pass == 0)
 		{
-			GlStateManager.disableBlend();
-			GlStateManager.disableAlpha();
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(x, y, z);
+			GL11.glEnable(GL11.GL_BLEND);
+			GL11.glEnable(GL11.GL_ALPHA);
+			GL11.glPushMatrix();
+			GL11.glTranslated(x, y, z);
 			
 			BlockPos target = te.getPos().offset(te.getFacing());
 			TileEntity test = te.getWorld().getTileEntity(target);
@@ -148,27 +146,27 @@ public class TileAutoLubricatorRenderer extends TileEntitySpecialRenderer<TileEn
 					handler.renderPipes(te.getWorld(), te, te.getFacing(), master);
 				}
 			}
-			GlStateManager.popMatrix();
+			GL11.glPopMatrix();
 
 			
 			
-			GlStateManager.pushMatrix();
-			GlStateManager.translate(x + .5F, y + .5F, z + .5F);
-			GlStateManager.enableAlpha();
+			GL11.glPushMatrix();
+			GL11.glTranslated(x + .5F, y + .5F, z + .5F);
+			GL11.glEnable(GL11.GL_ALPHA);
 			
 			int rotate = 0;
 			if (te.getFacing() == EnumFacing.NORTH) rotate = 1;
 			if (te.getFacing() == EnumFacing.SOUTH) rotate = 3;
 			if (te.getFacing() == EnumFacing.WEST) rotate = 2;
-			GlStateManager.rotate(rotate * 90, 0, 1, 0);
-			GlStateManager.translate(-.5F, -.5F, -.5F);
+			GL11.glRotatef(rotate * 90, 0, 1, 0);
+			GL11.glTranslated(-.5F, -.5F, -.5F);
 			ClientUtils.bindTexture("immersivepetroleum:textures/models/lubricator.png");
 			base.render(null, 0, 0, 0, 0, 0, 0.0625F);
-			GlStateManager.translate(0, yOffset, 0);
+			GL11.glTranslated(0, yOffset, 0);
 			//base.renderPlunger(null, 0, 0, 0, 0, 0, 0.0625F);
-			GlStateManager.popMatrix();
+			GL11.glPopMatrix();
 		}
-		GlStateManager.disableBlend();
+		GL11.glDisable(GL11.GL_BLEND);
 
 
 	}

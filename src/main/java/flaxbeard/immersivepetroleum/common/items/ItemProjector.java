@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.BlockRendererDispatcher;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GL11;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.VertexBuffer;
@@ -28,17 +28,17 @@ import net.minecraft.util.EnumFacing;
 import net.minecraft.util.EnumHand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Tuple;
-import net.minecraft.util.math.BlockPos;
+import flaxbeard.immersivepetroleum.common.util.BlockPos;
 import net.minecraft.util.math.RayTraceResult.Type;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderWorldLastEvent;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraftforge.oredict.OreDictionary;
 
 import org.lwjgl.input.Keyboard;
@@ -464,7 +464,7 @@ public class ItemProjector extends ItemIPBase
 
 		Minecraft mc = ClientUtils.mc();
 		
-		GlStateManager.pushMatrix();
+		GL11.glPushMatrix();
 		
 		if (mc.thePlayer != null)
 		{
@@ -476,13 +476,13 @@ public class ItemProjector extends ItemIPBase
 			
 			for (int i = 0; i < 11; i++)
 			{
-				GlStateManager.pushMatrix();
+				GL11.glPushMatrix();
 				ItemStack stack = (i == 10 ? secondItem : mc.thePlayer.inventory.getStackInSlot(i));
 				if (stack != null && stack.getItem() == IPContent.itemProjector && ItemNBTHelper.hasKey(stack, "multiblock"))
 				{
 					renderSchematic(stack, mc.thePlayer, mc.thePlayer.worldObj, event.getPartialTicks(), i == mc.thePlayer.inventory.currentItem || (i == 10 && off));
 				}
-				GlStateManager.popMatrix();
+				GL11.glPopMatrix();
 			}
 		}
 		
@@ -519,7 +519,7 @@ public class ItemProjector extends ItemIPBase
 										if (mc.thePlayer.worldObj.getBlockState(targetPos).getBlock().isReplaceable(mc.thePlayer.worldObj, targetPos)
 												&& mc.thePlayer.worldObj.getBlockState(targetPos.up()).getBlock().isReplaceable(mc.thePlayer.worldObj, targetPos.up()))
 										{
-											GlStateManager.pushMatrix();
+											GL11.glPushMatrix();
 											float alpha = .5f;
 											ShaderUtil.alpha_static(alpha, mc.thePlayer.ticksExisted);
 											double px = TileEntityRendererDispatcher.staticPlayerX;
@@ -527,28 +527,28 @@ public class ItemProjector extends ItemIPBase
 											double pz = TileEntityRendererDispatcher.staticPlayerZ;
 											
 											
-											GlStateManager.translate(targetPos.getX() - px, targetPos.getY() - py, targetPos.getZ() -pz);
-											GlStateManager.translate(0.5, -.13, .5);	
+											GL11.glTranslated(targetPos.getX() - px, targetPos.getY() - py, targetPos.getZ() -pz);
+											GL11.glTranslated(0.5, -.13, .5);	
 		
 											switch (targetFacing)
 											{
 												case SOUTH:
-													GlStateManager.rotate(270, 0, 1, 0);
+													GL11.glRotatef(270, 0, 1, 0);
 													break;
 												case NORTH:
-													GlStateManager.rotate(90, 0, 1, 0);
+													GL11.glRotatef(90, 0, 1, 0);
 													break;
 												case WEST:
-													GlStateManager.rotate(180, 0, 1, 0);
+													GL11.glRotatef(180, 0, 1, 0);
 													break;
 												case EAST:
 													break;
 												default:
 											}
-											GlStateManager.translate(0.02, 0, .019);	
+											GL11.glTranslated(0.02, 0, .019);	
 		
-											GlStateManager.scale(1/0.65F, 1/0.65F, 1/0.65F);
-											GlStateManager.scale(2, 2, 2);
+											GL11.glScalef(1/0.65F, 1/0.65F, 1/0.65F);
+											GL11.glScalef(2, 2, 2);
 								
 		
 											ItemStack toRender = new ItemStack(Item.getItemFromBlock(IPContent.blockMetalDevice));
@@ -556,7 +556,7 @@ public class ItemProjector extends ItemIPBase
 											ClientUtils.mc().getRenderItem().renderItem(toRender, ItemCameraTransforms.TransformType.FIXED);			
 										
 											ShaderUtil.releaseShader();
-											GlStateManager.popMatrix();
+											GL11.glPopMatrix();
 										}
 									}
 								}
@@ -567,7 +567,7 @@ public class ItemProjector extends ItemIPBase
 			}
 		}
 		
-		GlStateManager.popMatrix();
+		GL11.glPopMatrix();
 
 	}
 	
@@ -656,14 +656,14 @@ public class ItemProjector extends ItemIPBase
 				final BlockRendererDispatcher blockRender = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
 				
-				GlStateManager.translate(hit.getX()-px, hit.getY()-py, hit.getZ()-pz);
+				GL11.glTranslated(hit.getX()-px, hit.getY()-py, hit.getZ()-pz);
 
-				GlStateManager.disableLighting();
+				GL11.disableLighting();
 
 				if(Minecraft.isAmbientOcclusionEnabled())
-					GlStateManager.shadeModel(GL11.GL_SMOOTH);
+					GL11.shadeModel(GL11.GL_SMOOTH);
 				else
-					GlStateManager.shadeModel(GL11.GL_FLAT);
+					GL11.shadeModel(GL11.GL_FLAT);
 
 				ClientUtils.mc().getTextureManager().bindTexture(TextureMap.LOCATION_BLOCKS_TEXTURE);
 				
@@ -684,7 +684,7 @@ public class ItemProjector extends ItemIPBase
 						{
 							BlockPos pos = new BlockPos(l, h, w);
 
-							GlStateManager.pushMatrix();
+							GL11.glPushMatrix();
 							
 							if (mb.getStructureManual()[h][l][w] != null)
 							{
@@ -767,11 +767,11 @@ public class ItemProjector extends ItemIPBase
 									slicePerfect = false;
 									float alpha = otherStateEqual ? .75F : .5F;
 									ShaderUtil.alpha_static(flicker * alpha, mc.thePlayer.ticksExisted + partialTicks);
-									GlStateManager.translate(xo, h, zo);
+									GL11.glTranslated(xo, h, zo);
 
-									GlStateManager.translate(.5, .5, .5);	
+									GL11.glTranslated(.5, .5, .5);	
 									
-									GlStateManager.scale(2.01, 2.01, 2.01);
+									GL11.glScalef(2.01, 2.01, 2.01);
 									
 									SchematicRenderBlockEvent renderEvent = new SchematicRenderBlockEvent(mb, idx, stack, world, rotate, l, h, w);
 									
@@ -786,7 +786,7 @@ public class ItemProjector extends ItemIPBase
 								}
 
 							}
-							GlStateManager.popMatrix();
+							GL11.glPopMatrix();
 
 							idx++;
 						}
@@ -795,7 +795,7 @@ public class ItemProjector extends ItemIPBase
 				}
 				
 				idx = 0;
-				GlStateManager.disableDepth();
+				GL11.disableDepth();
 
 				for(int h = 0; h < mh; h++)
 				{
@@ -806,7 +806,7 @@ public class ItemProjector extends ItemIPBase
 						{
 							BlockPos pos = new BlockPos(l, h, w);
 			
-							GlStateManager.pushMatrix();
+							GL11.glPushMatrix();
 
 							if (mb.getStructureManual()[h][l][w] != null)
 							{
@@ -888,20 +888,20 @@ public class ItemProjector extends ItemIPBase
 									if (isEmpty) slicePerfect = false;
 									if (!isEmpty || otherStateEqual)
 									{
-										GlStateManager.pushMatrix();
-										GlStateManager.disableTexture2D();
-										GlStateManager.enableBlend();
-										GlStateManager.disableCull();
-										GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-										GlStateManager.shadeModel(GL11.GL_SMOOTH);
+										GL11.glPushMatrix();
+										GL11.disableTexture2D();
+										GL11.glEnable(GL11.GL_BLEND);
+										GL11.disableCull();
+										GL11.tryBlendFuncSeparate(770, 771, 1, 0);
+										GL11.shadeModel(GL11.GL_SMOOTH);
 										float r = 1;
 										float g = !isEmpty ? 0 : 1;
 										float b = !isEmpty ? 0 : 1;
 										float alpha = .375F * flicker;
-										GlStateManager.translate(xo + .5, h + .5, zo + .5);
-										GlStateManager.scale(1.01, 1.01, 1.01);
+										GL11.glTranslated(xo + .5, h + .5, zo + .5);
+										GL11.glScalef(1.01, 1.01, 1.01);
 										//buffer.setTranslation(l, h, w);
-										GlStateManager.glLineWidth(2f);
+										GL11.glLineWidth(2f);
 										buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 										buffer.pos(-.5F, .5F, -.5F).color(r,g,b, alpha).endVertex();
 										buffer.pos(.5F, .5F, -.5F).color(r,g,b, alpha).endVertex();
@@ -932,17 +932,17 @@ public class ItemProjector extends ItemIPBase
 										
 										tessellator.draw();
 										buffer.setTranslation(0, 0, 0);
-										GlStateManager.shadeModel(GL11.GL_FLAT);
-										GlStateManager.enableCull();
-										GlStateManager.disableBlend();
-										GlStateManager.enableTexture2D();
-										GlStateManager.popMatrix();
+										GL11.shadeModel(GL11.GL_FLAT);
+										GL11.enableCull();
+										GL11.glDisable(GL11.GL_BLEND);
+										GL11.glEnable(GL11.GL_TEXTURE_2D);
+										GL11.glPopMatrix();
 									}
 									
 								}
 
 							}
-							GlStateManager.popMatrix();
+							GL11.glPopMatrix();
 
 							idx++;
 						}
@@ -953,19 +953,19 @@ public class ItemProjector extends ItemIPBase
 				if (perfect)
 				{
 					
-					GlStateManager.pushMatrix();
-					GlStateManager.disableTexture2D();
-					GlStateManager.enableBlend();
-					GlStateManager.disableCull();
-					GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-					GlStateManager.shadeModel(GL11.GL_SMOOTH);
+					GL11.glPushMatrix();
+					GL11.disableTexture2D();
+					GL11.glEnable(GL11.GL_BLEND);
+					GL11.disableCull();
+					GL11.tryBlendFuncSeparate(770, 771, 1, 0);
+					GL11.shadeModel(GL11.GL_SMOOTH);
 					float r = 0;
 					float g = 1;
 					float b = 0;
-					GlStateManager.translate(0, 0, 0);
-					GlStateManager.scale(xd, mh, zd);
+					GL11.glTranslated(0, 0, 0);
+					GL11.glScalef(xd, mh, zd);
 					//buffer.setTranslation(l, h, w);
-					GlStateManager.glLineWidth(2f);
+					GL11.glLineWidth(2f);
 					buffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
 					buffer.pos(0, 1, 0).color(r,g,b,.375f).endVertex();
 					buffer.pos(1, 1, 0).color(r,g,b,.375f).endVertex();
@@ -996,21 +996,21 @@ public class ItemProjector extends ItemIPBase
 					
 					tessellator.draw();
 					buffer.setTranslation(0, 0, 0);
-					GlStateManager.shadeModel(GL11.GL_FLAT);
-					GlStateManager.enableCull();
-					GlStateManager.disableBlend();
-					GlStateManager.enableTexture2D();
-					GlStateManager.popMatrix();
+					GL11.shadeModel(GL11.GL_FLAT);
+					GL11.enableCull();
+					GL11.glDisable(GL11.GL_BLEND);
+					GL11.glEnable(GL11.GL_TEXTURE_2D);
+					GL11.glPopMatrix();
 				}
 
 				RenderHelper.disableStandardItemLighting();
-				GlStateManager.disableRescaleNormal();
+				GL11.disableRescaleNormal();
 
-				GlStateManager.enableBlend();
+				GL11.glEnable(GL11.GL_BLEND);
 				RenderHelper.disableStandardItemLighting();
 			}
 		}
-		GlStateManager.enableDepth();
+		GL11.enableDepth();
 	}
 	
 	@SubscribeEvent
@@ -1210,13 +1210,13 @@ public class ItemProjector extends ItemIPBase
 			switch (rotate)
 			{
 				case WEST:
-					GlStateManager.rotate(180, 0, 1, 0);
+					GL11.glRotatef(180, 0, 1, 0);
 					break;
 				case NORTH:
-					GlStateManager.rotate(90, 0, 1, 0);
+					GL11.glRotatef(90, 0, 1, 0);
 					break;
 				case SOUTH:
-					GlStateManager.rotate(270, 0, 1, 0);
+					GL11.glRotatef(270, 0, 1, 0);
 					break;
 				default:
 					break;
@@ -1224,22 +1224,22 @@ public class ItemProjector extends ItemIPBase
 			if ((mb.getUniqueName().equals("IE:AutoWorkbench") && (event.getW() != 1 || event.getL() != 2))
 					|| mb.getUniqueName().equals("IE:BottlingMachine"))
 			{
-				GlStateManager.rotate(270, 0, 1, 0);
+				GL11.glRotatef(270, 0, 1, 0);
 			}
 			else if (mb.getUniqueName().equals("IE:AutoWorkbench") && (rotate == EnumFacing.WEST || rotate == EnumFacing.EAST))
 			{
-				GlStateManager.rotate(180, 0, 1, 0);
+				GL11.glRotatef(180, 0, 1, 0);
 			}
-			GlStateManager.rotate(90, 0, 1, 0);
+			GL11.glRotatef(90, 0, 1, 0);
 		}
 		else if (state.getBlock() == IEContent.blockMetalDevice0 && BlockTypes_MetalDevice0.values()[state.getBlock().getMetaFromState(state)]==BlockTypes_MetalDevice0.FLUID_PUMP)
 		{
-			GlStateManager.translate(0, .225F, 0);
-			GlStateManager.scale(.9F, .9F, .9F);
+			GL11.glTranslated(0, .225F, 0);
+			GL11.glScalef(.9F, .9F, .9F);
 		}
 		else if (state.getBlock() == Blocks.PISTON)
 		{
-			GlStateManager.rotate(180, 1, 0, 0);
+			GL11.glRotatef(180, 1, 0, 0);
 		}
 	}
 	

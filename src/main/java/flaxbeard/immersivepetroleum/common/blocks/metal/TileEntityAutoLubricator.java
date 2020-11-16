@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.renderer.GL11;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,7 +19,7 @@ import net.minecraft.util.EnumParticleTypes;
 import net.minecraft.util.ITickable;
 import net.minecraft.util.Tuple;
 import net.minecraft.util.math.AxisAlignedBB;
-import net.minecraft.util.math.BlockPos;
+import flaxbeard.immersivepetroleum.common.util.BlockPos;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.world.World;
@@ -28,8 +28,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidUtil;
 import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.crafting.CrusherRecipe;
 import blusunrize.immersiveengineering.api.energy.immersiveflux.FluxStorage;
@@ -159,27 +159,27 @@ public class TileEntityAutoLubricator extends TileEntityIEBase implements IDirec
 			}
 
 	
-			GlStateManager.translate(0, -1, 0);
+			GL11.glTranslated(0, -1, 0);
 			Vec3i offset = master.getPos().subtract(tile.getPos());
-			GlStateManager.translate(offset.getX(), offset.getY(), offset.getZ());
+			GL11.glTranslated(offset.getX(), offset.getY(), offset.getZ());
 
 			EnumFacing rotation = master.facing;
 			if (rotation == EnumFacing.NORTH)
 			{
-				GlStateManager.rotate(90F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, 0);
+				GL11.glRotatef(90F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, 0);
 			}
 			else if (rotation == EnumFacing.WEST)
 			{
-				GlStateManager.rotate(180F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, -1);
+				GL11.glRotatef(180F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, -1);
 			}
 			else if (rotation == EnumFacing.SOUTH)
 			{
-				GlStateManager.rotate(270F, 0, 1, 0);
-				GlStateManager.translate(0, 0, -1);
+				GL11.glRotatef(270F, 0, 1, 0);
+				GL11.glTranslated(0, 0, -1);
 			}
-			GlStateManager.translate(-1, 0, -1);
+			GL11.glTranslated(-1, 0, -1);
 			ClientUtils.bindTexture("immersivepetroleum:textures/blocks/lube_pipe12.png");
 			if (master.mirrored)
 			{
@@ -332,34 +332,34 @@ public class TileEntityAutoLubricator extends TileEntityIEBase implements IDirec
 			}
 
 	
-			GlStateManager.translate(0, -1, 0);
+			GL11.glTranslated(0, -1, 0);
 			Vec3i offset = master.getPos().subtract(tile.getPos());
-			GlStateManager.translate(offset.getX(), offset.getY(), offset.getZ());
+			GL11.glTranslated(offset.getX(), offset.getY(), offset.getZ());
 
 			EnumFacing rotation = master.facing;
 			if (rotation == EnumFacing.NORTH)
 			{
-				GlStateManager.rotate(90F, 0, 1, 0);
+				GL11.glRotatef(90F, 0, 1, 0);
 				
 			}
 			else if (rotation == EnumFacing.WEST)
 			{
-				GlStateManager.rotate(180F, 0, 1, 0);
-				GlStateManager.translate(0, 0, -1);
+				GL11.glRotatef(180F, 0, 1, 0);
+				GL11.glTranslated(0, 0, -1);
 
 			}
 			else if (rotation == EnumFacing.SOUTH)
 			{
-				GlStateManager.rotate(270F, 0, 1, 0);
-				GlStateManager.translate(1, 0, -1);
+				GL11.glRotatef(270F, 0, 1, 0);
+				GL11.glTranslated(1, 0, -1);
 			}
 			else if (rotation == EnumFacing.EAST)
 			{
-				GlStateManager.translate(1, 0, 0);
+				GL11.glTranslated(1, 0, 0);
 
 			}
 			
-			GlStateManager.translate(-1, 0, -1);
+			GL11.glTranslated(-1, 0, -1);
 			ClientUtils.bindTexture("immersivepetroleum:textures/blocks/lube_pipe12.png");
 			if (master.mirrored)
 			{
@@ -502,26 +502,26 @@ public class TileEntityAutoLubricator extends TileEntityIEBase implements IDirec
 			}
 
 	
-			GlStateManager.translate(0, -1, 0);
+			GL11.glTranslated(0, -1, 0);
 			Vec3i offset = master.getPos().subtract(tile.getPos());
-			GlStateManager.translate(offset.getX(), offset.getY(), offset.getZ());
+			GL11.glTranslated(offset.getX(), offset.getY(), offset.getZ());
 
 			EnumFacing rotation = master.facing;
 			if (rotation == EnumFacing.NORTH)
 			{
-				GlStateManager.rotate(90F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, 0);
+				GL11.glRotatef(90F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, 0);
 			}
 			else if (rotation == EnumFacing.WEST)
 			{
-				GlStateManager.rotate(180F, 0, 1, 0);
-				GlStateManager.translate(-1, 0, -1);
+				GL11.glRotatef(180F, 0, 1, 0);
+				GL11.glTranslated(-1, 0, -1);
 
 			}
 			else if (rotation == EnumFacing.SOUTH)
 			{
-				GlStateManager.rotate(270F, 0, 1, 0);
-				GlStateManager.translate(0, 0, -1);
+				GL11.glRotatef(270F, 0, 1, 0);
+				GL11.glTranslated(0, 0, -1);
 
 			}
 			

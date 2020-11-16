@@ -2,22 +2,15 @@ package flaxbeard.immersivepetroleum.client.render;
 
 import org.lwjgl.opengl.GL11;
 
-import net.minecraft.client.model.IMultipassModel;
-import net.minecraft.client.model.ModelBase;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.entity.Render;
-import net.minecraft.client.renderer.entity.RenderManager;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import blusunrize.immersiveengineering.api.energy.wires.WireType;
 import blusunrize.immersiveengineering.client.ClientUtils;
-import flaxbeard.immersivepetroleum.client.ClientProxy;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.immersivepetroleum.client.model.ModelSpeedboat;
 import flaxbeard.immersivepetroleum.common.entity.EntitySpeedboat;
+import net.minecraft.client.renderer.entity.Render;
+import net.minecraft.client.renderer.entity.RenderManager;
+import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 
 @SideOnly(Side.CLIENT)
 public class RenderSpeedboat extends Render<EntitySpeedboat>
@@ -39,7 +32,7 @@ public class RenderSpeedboat extends Render<EntitySpeedboat>
 	public void doRender(EntitySpeedboat entity, double x, double y, double z, float entityYaw, float partialTicks)
 	{
 		
-		GlStateManager.pushMatrix();
+		GL11.glPushMatrix();
 		this.setupTranslation(x, y, z);
 		
 
@@ -47,13 +40,13 @@ public class RenderSpeedboat extends Render<EntitySpeedboat>
 		ClientUtils.bindTexture(entity.isFireproof ? textureArmor : texture);
 		if (entity.inLava)
 		{
-			GlStateManager.translate(0, -3.9F/16F, 0);
+			GL11.glTranslated(0, -3.9F/16F, 0);
 		}
 
 		if (this.renderOutlines)
 		{
-			GlStateManager.enableColorMaterial();
-			GlStateManager.enableOutlineMode(this.getTeamColor(entity));
+			//GL11.enableColorMaterial();
+			//GL11.enableOutlineMode(this.getTeamColor(entity));
 		}
 
 	
@@ -88,19 +81,19 @@ public class RenderSpeedboat extends Render<EntitySpeedboat>
 		
 		if (this.renderOutlines)
 		{
-			GlStateManager.disableOutlineMode();
-			GlStateManager.disableColorMaterial();
+			//GL11.disableOutlineMode();
+			//GL11.disableColorMaterial();
 		}
 			
 		
-		GlStateManager.popMatrix();
+		GL11.glPopMatrix();
 		
 		super.doRender(entity, x, y, z, entityYaw, partialTicks);
 	}
 
 	public void setupRotation(EntitySpeedboat boat, float p_188311_2_, float p_188311_3_)
 	{
-		GlStateManager.rotate(180.0F - p_188311_2_, 0.0F, 1.0F, 0.0F);
+		GL11.glRotatef(180.0F - p_188311_2_, 0.0F, 1.0F, 0.0F);
 		float f = (float)boat.getTimeSinceHit() - p_188311_3_;
 		float f1 = boat.getDamageTaken() - p_188311_3_;
 
@@ -111,20 +104,20 @@ public class RenderSpeedboat extends Render<EntitySpeedboat>
 
 		if (f > 0.0F)
 		{
-			GlStateManager.rotate(MathHelper.sin(f) * f * f1 / 10.0F * (float)boat.getForwardDirection(), 1.0F, 0.0F, 0.0F);
+			GL11.glRotatef(MathHelper.sin(f) * f * f1 / 10.0F * (float)boat.getForwardDirection(), 1.0F, 0.0F, 0.0F);
 		}
 		
 		if (boat.isBoosting)
 		{
-			GlStateManager.rotate(3, 1, 0, 0);
+			GL11.glRotatef(3, 1, 0, 0);
 		}
 
-		GlStateManager.scale(-1.0F, -1.0F, 1.0F);
+		GL11.glScalef(-1.0F, -1.0F, 1.0F);
 	}
 
 	public void setupTranslation(double p_188309_1_, double p_188309_3_, double p_188309_5_)
 	{
-		GlStateManager.translate((float)p_188309_1_, (float)p_188309_3_ + 0.375F, (float)p_188309_5_);
+		GL11.glTranslated((float)p_188309_1_, (float)p_188309_3_ + 0.375F, (float)p_188309_5_);
 	}
 
 	/**
@@ -138,14 +131,14 @@ public class RenderSpeedboat extends Render<EntitySpeedboat>
 
 	public void renderMultipass(EntitySpeedboat p_188300_1_, double p_188300_2_, double p_188300_4_, double p_188300_6_, float p_188300_8_, float p_188300_9_)
 	{
-		GlStateManager.pushMatrix();
+		GL11.glPushMatrix();
 		this.setupTranslation(p_188300_2_, p_188300_4_, p_188300_6_);
 		this.setupRotation(p_188300_1_, p_188300_8_, p_188300_9_);
 
 		ClientUtils.bindTexture(texture);
 
 		modelBoat.renderMultipass(p_188300_1_, p_188300_9_, 0.0F, -0.1F, 0.0F, 0.0F, 0.0625F);
-		GlStateManager.popMatrix();
+		GL11.glPopMatrix();
 	}
 
 	@Override

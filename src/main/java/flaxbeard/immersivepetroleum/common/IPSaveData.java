@@ -5,8 +5,8 @@ import java.util.Map;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.world.WorldSavedData;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.relauncher.Side;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 import blusunrize.immersiveengineering.api.DimensionChunkCoords;
 import flaxbeard.immersivepetroleum.api.crafting.LubricatedHandler;
 import flaxbeard.immersivepetroleum.api.crafting.LubricatedHandler.LubricatedTileInfo;
@@ -51,7 +51,7 @@ public class IPSaveData extends WorldSavedData
 	}
 
 	@Override
-	public NBTTagCompound writeToNBT(NBTTagCompound nbt)
+	public void writeToNBT(NBTTagCompound nbt)
 	{
 		NBTTagList oilList = new NBTTagList();
 		for (Map.Entry<DimensionChunkCoords, OilWorldInfo> e : PumpjackHandler.oilCache.entrySet())
@@ -72,7 +72,7 @@ public class IPSaveData extends WorldSavedData
 			}
 		nbt.setTag("lubricated", lubricatedList);
 		
-		return nbt;
+		//return nbt;
 	}
 
 

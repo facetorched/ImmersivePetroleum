@@ -7,85 +7,41 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.RenderHelper;
-import net.minecraft.client.renderer.RenderItem;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.VertexBuffer;
-import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.resources.I18n;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemStack;
-import net.minecraft.network.datasync.DataParameter;
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.util.EnumHand;
-import net.minecraft.util.EnumParticleTypes;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.math.RayTraceResult.Type;
-import net.minecraft.util.math.Vec3i;
-import net.minecraft.world.World;
-import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.client.event.RenderBlockOverlayEvent;
-import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
-import net.minecraftforge.client.event.RenderGameOverlayEvent;
-import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.client.event.RenderWorldLastEvent;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.event.entity.living.LivingAttackEvent;
-import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent.RightClickBlock;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidUtil;
-import net.minecraftforge.fluids.capability.IFluidHandler;
-import net.minecraftforge.fluids.capability.IFluidTankProperties;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.ClientTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.Phase;
-import net.minecraftforge.fml.common.gameevent.TickEvent.PlayerTickEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent.WorldTickEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import net.minecraftforge.oredict.OreDictionary;
-
 import org.lwjgl.opengl.GL11;
 
-import blusunrize.immersiveengineering.api.Lib;
 import blusunrize.immersiveengineering.api.ManualPageMultiblock;
 import blusunrize.immersiveengineering.api.MultiblockHandler.IMultiblock;
+import blusunrize.immersiveengineering.api.fluid.PipeConnection.Type;
 import blusunrize.immersiveengineering.api.tool.ExcavatorHandler;
 import blusunrize.immersiveengineering.client.ClientProxy;
 import blusunrize.immersiveengineering.client.ClientUtils;
 import blusunrize.immersiveengineering.common.Config.IEConfig;
 import blusunrize.immersiveengineering.common.IEContent;
 import blusunrize.immersiveengineering.common.blocks.IEBlockInterfaces.IBlockOverlayText;
-import blusunrize.immersiveengineering.common.blocks.TileEntityMultiblockPart;
 import blusunrize.immersiveengineering.common.blocks.metal.BlockTypes_MetalDevice1;
+import blusunrize.immersiveengineering.common.blocks.metal.TileEntityMultiblockPart;
 import blusunrize.immersiveengineering.common.blocks.metal.TileEntitySampleDrill;
 import blusunrize.immersiveengineering.common.blocks.stone.TileEntityCoresample;
 import blusunrize.immersiveengineering.common.items.ItemChemthrower;
 import blusunrize.immersiveengineering.common.items.ItemCoresample;
 import blusunrize.immersiveengineering.common.items.ItemDrill;
 import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
+import blusunrize.immersiveengineering.common.util.Lib;
 import blusunrize.immersiveengineering.common.util.Utils;
 import blusunrize.lib.manual.IManualPage;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.ManualInstance.ManualEntry;
 import blusunrize.lib.manual.gui.GuiManual;
+import cpw.mods.fml.common.eventhandler.EventPriority;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.ClientTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.Phase;
+import cpw.mods.fml.common.gameevent.TickEvent.PlayerTickEvent;
+import cpw.mods.fml.common.gameevent.TickEvent.WorldTickEvent;
+import cpw.mods.fml.relauncher.ReflectionHelper;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import flaxbeard.immersivepetroleum.api.crafting.LubricatedHandler;
 import flaxbeard.immersivepetroleum.api.crafting.LubricatedHandler.ILubricationHandler;
 import flaxbeard.immersivepetroleum.api.crafting.LubricatedHandler.LubricatedTileInfo;
@@ -97,6 +53,33 @@ import flaxbeard.immersivepetroleum.common.entity.EntitySpeedboat;
 import flaxbeard.immersivepetroleum.common.network.CloseBookPacket;
 import flaxbeard.immersivepetroleum.common.network.IPPacketHandler;
 import flaxbeard.immersivepetroleum.common.network.MessageReservoirListSync;
+import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumFacing;
+import net.minecraft.world.World;
+import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.client.event.RenderBlockOverlayEvent;
+import net.minecraftforge.client.event.RenderBlockOverlayEvent.OverlayType;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderPlayerEvent;
+import net.minecraftforge.client.event.RenderWorldLastEvent;
+import net.minecraftforge.common.DimensionManager;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class EventHandler
 {
@@ -150,8 +133,8 @@ public class EventHandler
 			}
 			EntityPlayer p = ClientUtils.mc().thePlayer;
 			
-			ItemStack mainItem = p.getHeldItemMainhand();
-			ItemStack offItem = p.getHeldItemOffhand();
+			ItemStack mainItem = p.getHeldItem();
+			ItemStack offItem = p.getHeldItem();
 
 			boolean main = mainItem != null && mainItem.getItem() == IEContent.itemTool && mainItem.getItemDamage() == 3;
 			boolean off = offItem != null && offItem.getItem() == IEContent.itemTool && offItem.getItemDamage() == 3;
@@ -180,12 +163,12 @@ public class EventHandler
 	@SubscribeEvent
 	public void renderLast(RenderWorldLastEvent event)
 	{
-		GlStateManager.pushMatrix();
+		GL11.glPushMatrix();
 		Minecraft mc = Minecraft.getMinecraft();
 		if (IPConfig.sample_displayBorder && mc.thePlayer != null)
 		{
-			ItemStack mainItem = mc.thePlayer.getHeldItemMainhand();
-			ItemStack secondItem = mc.thePlayer.getHeldItemOffhand();
+			ItemStack mainItem = mc.thePlayer.getHeldItem();
+			ItemStack secondItem = mc.thePlayer.getHeldItem();
 			
 			boolean chunkBorders = false;
 			for(EnumHand hand : EnumHand.values())
@@ -214,7 +197,7 @@ public class EventHandler
 				//}
 			}
 		}
-		GlStateManager.popMatrix();
+		GL11.glPopMatrix();
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -227,43 +210,45 @@ public class EventHandler
 		double pz = TileEntityRendererDispatcher.staticPlayerZ;
 		int y = Math.min((int)player.posY-2,player.getEntityWorld().getChunkFromBlockCoords(new BlockPos(chunkX, 0, chunkZ)).getLowestHeight());
 		float h = (float)Math.max(32, player.posY-y+4);
-		Tessellator tessellator = Tessellator.getInstance();
-		VertexBuffer vertexbuffer = tessellator.getBuffer();
+		Tessellator tessellator = Tessellator.instance;
+		//VertexBuffer vertexbuffer = tessellator.getBuffer();
 
-		GlStateManager.disableTexture2D();
-		GlStateManager.enableBlend();
-		GlStateManager.disableCull();
-		GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-		GlStateManager.shadeModel(GL11.GL_SMOOTH);
+		GL11.glDisable(GL11.GL_TEXTURE_2D);
+		GL11.glEnable(GL11.GL_BLEND);
+		GL11.glDisable(GL11.GL_CULL_FACE);
+		//GL11.glTryBlendFuncSeparate(770, 771, 1, 0);
+		GL11.glShadeModel(GL11.GL_SMOOTH);
 		float r = Lib.COLOUR_F_ImmersiveOrange[0];
 		float g = Lib.COLOUR_F_ImmersiveOrange[1];
 		float b = Lib.COLOUR_F_ImmersiveOrange[2];
-		vertexbuffer.setTranslation(chunkX-px, y+2-py, chunkZ-pz);
-		GlStateManager.glLineWidth(5f);
-		vertexbuffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
-		vertexbuffer.pos( 0,0, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos( 0,h, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,0, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,h, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,0,16).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,h,16).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos( 0,0,16).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos( 0,h,16).color(r,g,b,.375f).endVertex();
+		tessellator.setTranslation(chunkX-px, y+2-py, chunkZ-pz);
+		GL11.glLineWidth(5f);
+		//vertexbuffer.begin(GL11.GL_LINES, DefaultVertexFormats.POSITION_COLOR);
+		tessellator.startDrawingQuads();
+		tessellator.setColorRGBA_F(r,g,b,.375f);
+		tessellator.addVertex( 0,0, 0);
+		tessellator.addVertex( 0,h, 0);
+		tessellator.addVertex(16,0, 0);
+		tessellator.addVertex(16,h, 0);
+		tessellator.addVertex(16,0,16);
+		tessellator.addVertex(16,h,16);
+		tessellator.addVertex( 0,0,16);
+		tessellator.addVertex( 0,h,16);
 
-		vertexbuffer.pos( 0,2, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,2, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos( 0,2, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos( 0,2,16).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos( 0,2,16).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,2,16).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,2, 0).color(r,g,b,.375f).endVertex();
-		vertexbuffer.pos(16,2,16).color(r,g,b,.375f).endVertex();
+		tessellator.addVertex( 0,2, 0);
+		tessellator.addVertex(16,2, 0);
+		tessellator.addVertex( 0,2, 0);
+		tessellator.addVertex( 0,2,16);
+		tessellator.addVertex( 0,2,16);
+		tessellator.addVertex(16,2,16);
+		tessellator.addVertex(16,2, 0);
+		tessellator.addVertex(16,2,16);
 		tessellator.draw();
-		vertexbuffer.setTranslation(0, 0, 0);
-		GlStateManager.shadeModel(GL11.GL_FLAT);
-		GlStateManager.enableCull();
-		GlStateManager.disableBlend();
-		GlStateManager.enableTexture2D();
+		tessellator.setTranslation(0, 0, 0);
+		GL11.glShadeModel(GL11.GL_FLAT);
+		GL11.glEnable(GL11.GL_CULL_FACE);
+		GL11.glDisable(GL11.GL_BLEND);
+		GL11.glEnable(GL11.GL_TEXTURE_2D);
 	}
 	
 	@SubscribeEvent(priority = EventPriority.LOWEST)

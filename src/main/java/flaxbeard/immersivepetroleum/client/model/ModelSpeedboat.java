@@ -1,17 +1,15 @@
 package flaxbeard.immersivepetroleum.client.model;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import flaxbeard.immersivepetroleum.common.entity.EntitySpeedboat;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.model.IMultipassModel;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.GLAllocation;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.util.math.MathHelper;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
-import flaxbeard.immersivepetroleum.common.entity.EntitySpeedboat;
+import net.minecraft.util.MathHelper;
 
 @SideOnly(Side.CLIENT)
 public class ModelSpeedboat extends ModelBase implements IMultipassModel
@@ -267,7 +265,7 @@ public class ModelSpeedboat extends ModelBase implements IMultipassModel
     public void render(Entity entityIn, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale)
     {
 
-        GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
         EntitySpeedboat entityboat = (EntitySpeedboat) entityIn;
         this.setRotationAngles(limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale, entityIn);
 
@@ -287,11 +285,11 @@ public class ModelSpeedboat extends ModelBase implements IMultipassModel
         
         //this.coreSampleBoat.render(scale);
         
-        GlStateManager.pushMatrix();
+        GL11.glPushMatrix();
         if (entityboat.isBeingRidden() && !entityboat.isEmergency())
-        	GlStateManager.translate((entityIn.worldObj.rand.nextFloat() - 0.5F) * 0.01F, (entityIn.worldObj.rand.nextFloat() - 0.5F) * 0.01F, (entityIn.worldObj.rand.nextFloat() - 0.5F) * 0.01F);
+        	GL11.glTranslated((entityIn.worldObj.rand.nextFloat() - 0.5F) * 0.01F, (entityIn.worldObj.rand.nextFloat() - 0.5F) * 0.01F, (entityIn.worldObj.rand.nextFloat() - 0.5F) * 0.01F);
         this.motor.render(scale);
-        GlStateManager.popMatrix();
+        GL11.glPopMatrix();
         
 
     }
@@ -329,10 +327,10 @@ public class ModelSpeedboat extends ModelBase implements IMultipassModel
     
     public void renderMultipass(Entity p_187054_1_, float p_187054_2_, float p_187054_3_, float p_187054_4_, float p_187054_5_, float p_187054_6_, float scale)
     {
-        GlStateManager.rotate(90.0F, 0.0F, 1.0F, 0.0F);
-        GlStateManager.colorMask(false, false, false, false);
+        GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+        GL11.colorMask(false, false, false, false);
         this.noWater.render(scale);
-        GlStateManager.colorMask(true, true, true, true);
+        GL11.colorMask(true, true, true, true);
     }
 
     /**

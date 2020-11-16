@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.FluidStack;
-import blusunrize.immersiveengineering.api.crafting.MultiblockRecipe;
+
 
 import com.google.common.collect.Lists;
 

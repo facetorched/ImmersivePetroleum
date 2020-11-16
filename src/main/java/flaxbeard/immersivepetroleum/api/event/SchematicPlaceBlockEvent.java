@@ -1,11 +1,10 @@
 package flaxbeard.immersivepetroleum.api.event;
 
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.World;
-import net.minecraftforge.fml.common.eventhandler.Cancelable;
-import net.minecraftforge.fml.common.eventhandler.Event;
+import cpw.mods.fml.common.eventhandler.Cancelable;
+import cpw.mods.fml.common.eventhandler.Event;
 import blusunrize.immersiveengineering.api.MultiblockHandler.IMultiblock;
 
 @Cancelable

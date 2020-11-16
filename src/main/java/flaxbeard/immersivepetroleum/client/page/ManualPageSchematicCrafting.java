@@ -1,17 +1,15 @@
 package flaxbeard.immersivepetroleum.client.page;
 
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import com.google.common.collect.ArrayListMultimap;
+
 import blusunrize.immersiveengineering.common.IEContent;
 import blusunrize.immersiveengineering.common.blocks.multiblocks.MultiblockArcFurnace;
 import blusunrize.immersiveengineering.common.util.ItemNBTHelper;
 import blusunrize.lib.manual.ManualInstance;
 import blusunrize.lib.manual.ManualPages;
-
-import com.google.common.collect.ArrayListMultimap;
-
+import cpw.mods.fml.relauncher.ReflectionHelper;
 import flaxbeard.immersivepetroleum.common.IPContent;
+import net.minecraft.item.ItemStack;
 
 public class ManualPageSchematicCrafting extends ManualPages.Crafting
 {

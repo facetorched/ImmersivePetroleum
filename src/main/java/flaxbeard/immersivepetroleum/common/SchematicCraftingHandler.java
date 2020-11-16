@@ -41,7 +41,7 @@ public class SchematicCraftingHandler implements IRecipe
 		return null;
 	}
 
-	@Override
+	//@Override
 	public ItemStack[] getRemainingItems(InventoryCrafting inv)
 	{
 		return new SchematicResult(inv).remaining;
