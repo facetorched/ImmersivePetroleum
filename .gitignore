@@ -1,3 +1,14 @@
+/*
+!/src/
+!.gitignore
+!gradlew*
+!/gradle/
+!/README.md
+!build.gradle
+!gradle.properties
+!/LICENSE.txt
+!itemmodels.py
+
 *.class
 
 # Mobile Tools for Java (J2ME)
@@ -16,4 +27,3 @@ src/main/java/cofh/api/energy/IEnergyConnection.java
 src/main/java/cofh/api/energy/IEnergyHandler.java
 src/main/java/cofh/api/energy/IEnergyProvider.java
 src/main/java/cofh/api/energy/IEnergyReceiver.java
-/bin/
